@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	routes "github.com/joe41203/go-gin-todos/config"
+)
 
 func main() {
-	fmt.Println("HelloWorld")
+	r := routes.Routes()
+	r.Run()
 }
