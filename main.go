@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/joe41203/go-gin-todos/config"
 	"github.com/joe41203/go-gin-todos/models"
+	"github.com/joe41203/go-gin-todos/routes"
 )
 
 var err error
@@ -21,6 +22,6 @@ func main() {
 
 	config.DB.AutoMigrate(&models.Todo{})
 
-	r := config.Routes()
+	r := routes.Routes()
 	r.Run()
 }

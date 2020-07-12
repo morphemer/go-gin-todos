@@ -6,8 +6,8 @@ import (
 )
 
 // GetAllTodos fetch all of todos
-func GetAllTodos(todo *[]Todo) (err error) {
-	if err = config.DB.Find(todo).Error; err != nil {
+func GetAllTodos(todos *[]Todo) (err error) {
+	if err = config.DB.Find(todos).Error; err != nil {
 		return err
 	}
 	return nil
