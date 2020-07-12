@@ -15,6 +15,7 @@ func GetTodos(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
+		c.HTML(http.StatusOK, "index.tmpl", todos)
 		c.JSON(http.StatusOK, todos)
 	}
 }

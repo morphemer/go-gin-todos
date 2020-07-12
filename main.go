@@ -23,5 +23,6 @@ func main() {
 	config.DB.AutoMigrate(&models.Todo{})
 
 	r := routes.Routes()
+	r.LoadHTMLGlob("views/*/**")
 	r.Run()
 }
