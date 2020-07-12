@@ -18,3 +18,15 @@ func GetTodos(c *gin.Context) {
 		c.JSON(http.StatusOK, todos)
 	}
 }
+
+// GetATodo get a todo
+func GetATodo(c *gin.Context) {
+	id := c.Param("id")
+	var todo models.Todo
+	err := models.GetATodo(&todo, id)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, todo)
+	}
+}

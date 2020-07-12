@@ -11,6 +11,7 @@ func Routes() *gin.Engine {
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/todos", controllers.GetTodos)
+		v1.GET("/todos/:id", controllers.GetATodo)
 	}
 	return r
 }
