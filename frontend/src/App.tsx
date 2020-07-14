@@ -1,25 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Table from 'react-bootstrap/Table'
+import { IUser } from "./models"
 
-function App() {
+const App: React.FC = () => {
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    fetch("http://localhost:8080/")
+      .then(res => res.json())
+      .then(res => setUsers(res))
+  }, []);
+
+  console.log(users)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Container>
+        <Row className="justify-content-center">
+          <Col>
+            <h1>User list</h1>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>ID</th>
+                  <th>UserName</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              {
+                users.map((user: IUser, idx: number) => {
+                  return (
+                    <tbody key={idx}>
+                      <tr>
+                        <td>{idx}</td>
+                        <td>{user.ID}</td>
+                        <td>{user.Username}</td>
+                        <td>{user.Email}</td>
+                      </tr>
+                    </tbody>
+                  )
+                })
+              }
+            </Table>
+          </Col>
+        </Row>
+      </Container>
+    </div >
   );
 }
 
