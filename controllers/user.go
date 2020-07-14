@@ -15,3 +15,18 @@ func GetAllUsers(c *gin.Context) {
 	db.Find(&users)
 	c.JSON(http.StatusOK, users)
 }
+
+// CreateUser create  a user
+func CreateUser(c *gin.Context) {
+	user := models.User{}
+	c.BindJSON(&user)
+
+	db := config.GetDB()
+
+	if db.NewRecord(user) {
+		db.Create(&user)
+		c.JSON(http.StatusCreated, user)
+	} else {
+		c.JSON(http.StatusInternalServerError, user)
+	}
+}

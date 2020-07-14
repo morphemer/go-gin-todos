@@ -21,5 +21,6 @@ func main() {
 	r.Use(cors.New(config))
 
 	r.GET("/", controllers.GetAllUsers)
+	r.POST("/users", controllers.CreateUser)
 	r.Run()
 }
