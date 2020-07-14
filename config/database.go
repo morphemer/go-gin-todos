@@ -17,7 +17,7 @@ var DB *gorm.DB
 
 // Init return DB
 func Init() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "./../gorm.db")
+	db, err := gorm.Open("sqlite3", "gorm.db")
 
 	if err != nil {
 		fmt.Println("DB Error", err)
