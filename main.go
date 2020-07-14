@@ -11,6 +11,7 @@ func main() {
 	db := config.Init()
 	defer db.Close()
 	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Article{})
 
 	r := gin.Default()
 
