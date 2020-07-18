@@ -1,27 +1,25 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Table from 'react-bootstrap/Table'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import { IUser } from "./models"
-
+import React, { useState, useEffect, FormEvent } from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Table from "react-bootstrap/Table";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { IUser } from "./models";
+import axios from "axios";
 
 interface postParameter {
-  username: string
-  email: string
+  username: string;
+  email: string;
 }
 
 const App: React.FC = () => {
-  const [users, setUsers] = useState<IUser[]>([])
-  const [username, setUsername] = useState<string>("")
-  const [email, setEmail] = useState<string>("")
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
-    fetch("http://localhost:8080/")
-      .then(res => res.json())
-      .then(res => setUsers(res))
+    axios.get("http://localhost:8080/").then((res) => setUsers(res.data));
   }, []);
 
   const createUserHandler = (e: FormEvent): void => {
@@ -29,17 +27,22 @@ const App: React.FC = () => {
 
     const postParameter: postParameter = {
       username: username,
-      email: email
-    }
+      email: email,
+    };
 
-    fetch("http://localhost:8080/users", { method: "POST", body: JSON.stringify(postParameter) })
-      .then(res => res.json())
-      .then(res => {
-        setUsers([...users, res])
-        setUsername("")
-        setEmail("")
+    axios
+      .post("http://localhost:8080/users", postParameter)
+      .then((res) => {
+        setUsers([...users, res.data]);
+        setUsername("");
+        setEmail("");
+      })
+      .catch((error) => alert(error))
+      .finally(() => {
+        setUsername("");
+        setEmail("");
       });
-  }
+  };
 
   return (
     <div className="App">
@@ -49,12 +52,26 @@ const App: React.FC = () => {
             <h1>User list</h1>
             <Form>
               <Form.Group controlId="username">
-                <Form.Control type="text" placeholder="Enter Username" value={username} onChange={e => setUsername(e.target.value)} />
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </Form.Group>
               <Form.Group controlId="email">
-                <Form.Control type="email" placeholder="Enter Email" value={email} onChange={e => setEmail(e.target.value)} />
+                <Form.Control
+                  type="email"
+                  placeholder="Enter Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </Form.Group>
-              <Button variant="primary" type="submit" onClick={createUserHandler}>
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={createUserHandler}
+              >
                 Submit
               </Button>
             </Form>
@@ -67,26 +84,24 @@ const App: React.FC = () => {
                   <th>Email</th>
                 </tr>
               </thead>
-              {
-                users.map((user: IUser, idx: number) => {
-                  return (
-                    <tbody key={idx}>
-                      <tr>
-                        <td>{idx}</td>
-                        <td>{user.ID}</td>
-                        <td>{user.Username}</td>
-                        <td>{user.Email}</td>
-                      </tr>
-                    </tbody>
-                  )
-                })
-              }
+              {users.map((user: IUser, idx: number) => {
+                return (
+                  <tbody key={idx}>
+                    <tr>
+                      <td>{idx}</td>
+                      <td>{user.ID}</td>
+                      <td>{user.Username}</td>
+                      <td>{user.Email}</td>
+                    </tr>
+                  </tbody>
+                );
+              })}
             </Table>
           </Col>
         </Row>
       </Container>
-    </div >
+    </div>
   );
-}
+};
 
 export default App;

@@ -7,4 +7,5 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/jinzhu/gorm v1.9.14
 	github.com/mattn/go-sqlite3 v1.14.0
+	gopkg.in/go-playground/validator.v9 v9.29.1
 )

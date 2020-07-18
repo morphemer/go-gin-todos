@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +21,12 @@ func GetAllUsers(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	user := models.User{}
 	c.BindJSON(&user)
+
+	if err := user.Validate(); err != nil {
+		fmt.Printf("%v\n", err)
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
 
 	db := config.GetDB()
 

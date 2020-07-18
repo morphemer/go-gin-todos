@@ -7,6 +7,6 @@ type Article struct {
 	gorm.Model
 	UserID  int
 	User    User
-	Title   string `gorm:"column:title"`
-	Content string `gorm:"column:content"`
+	Title   string `gorm:"column:title;not null"`
+	Content string `gorm:"column:content;not null"`
 }
