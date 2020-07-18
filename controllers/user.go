@@ -26,7 +26,10 @@ func CreateUser(c *gin.Context) {
 
 	if err := user.Validate(); err != nil {
 		fmt.Printf("%v\n", err)
+		fmt.Printf("%v\n", err)
+		fmt.Printf("%v\n", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
 	}
 
 	db := config.GetDB()
@@ -35,7 +38,7 @@ func CreateUser(c *gin.Context) {
 		db.Create(&user)
 		c.JSON(http.StatusCreated, user)
 	} else {
-		c.JSON(http.StatusInternalServerError, user)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, user)
 	}
 }
 
