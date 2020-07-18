@@ -26,8 +26,7 @@ func CreateUser(c *gin.Context) {
 
 	if err := user.Validate(); err != nil {
 		fmt.Printf("%v\n", err)
-		c.JSON(http.StatusBadRequest, err)
-		return
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 	}
 
 	db := config.GetDB()

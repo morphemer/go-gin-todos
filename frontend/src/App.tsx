@@ -24,26 +24,27 @@ const App: React.FC = () => {
     axios.get("http://localhost:8080/").then((res) => setUsers(res.data));
   }, []);
 
-  const createUserHandler = (e: FormEvent): void => {
-    e.preventDefault();
+  const createUserHandler = async (e: FormEvent): Promise<void> => {
+    try {
+      e.preventDefault();
 
-    const postParameter: postParameter = {
-      username: username,
-      email: email,
-    };
+      const postParameter: postParameter = {
+        username: username,
+        email: email,
+      };
 
-    axios
-      .post("http://localhost:8080/users", postParameter)
-      .then((res) => {
-        setUsers([...users, res.data]);
-        setUsername("");
-        setEmail("");
-      })
-      .catch((error) => alert(error))
-      .finally(() => {
-        setUsername("");
-        setEmail("");
-      });
+      const response = await axios.post(
+        "http://localhost:8080/users",
+        postParameter
+      );
+      setUsers([...users, response.data]);
+      setUsername("");
+      setEmail("");
+      console.log(`HTTP status ${response.status} OK`);
+    } catch (error) {
+      const { status, statusText, data } = error.response;
+      alert(`HTTP status ${status} ${statusText} Message: ${data}`);
+    }
   };
 
   const deleteUserHandler = (id: DeleteUserID): void => {
