@@ -22,5 +22,6 @@ func main() {
 
 	r.GET("/", controllers.GetAllUsers)
 	r.POST("/users", controllers.CreateUser)
+	r.DELETE("/users/:id", controllers.DeleteUser)
 	r.Run()
 }

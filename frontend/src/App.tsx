@@ -13,6 +13,8 @@ interface postParameter {
   email: string;
 }
 
+type DeleteUserID = IUser["ID"];
+
 const App: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [username, setUsername] = useState<string>("");
@@ -42,6 +44,19 @@ const App: React.FC = () => {
         setUsername("");
         setEmail("");
       });
+  };
+
+  const deleteUserHandler = (id: DeleteUserID): void => {
+    axios
+      .delete(`http://localhost:8080/users/${id}`)
+      .then(() => {
+        const filteredUsers = users.filter((user) => user.ID !== id);
+        setUsers(filteredUsers);
+        setUsername("");
+        setEmail("");
+        console.log(`user ${id} is deleted`);
+      })
+      .catch((error) => alert(error));
   };
 
   return (
@@ -82,6 +97,7 @@ const App: React.FC = () => {
                   <th>ID</th>
                   <th>UserName</th>
                   <th>Email</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               {users.map((user: IUser, idx: number) => {
@@ -92,6 +108,14 @@ const App: React.FC = () => {
                       <td>{user.ID}</td>
                       <td>{user.Username}</td>
                       <td>{user.Email}</td>
+                      <td>
+                        <Button
+                          variant="danger"
+                          onClick={() => deleteUserHandler(user.ID)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
                     </tr>
                   </tbody>
                 );

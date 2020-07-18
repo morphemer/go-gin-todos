@@ -3,8 +3,10 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/joe41203/go-gin-todos/config"
 	"github.com/joe41203/go-gin-todos/models"
 )
@@ -36,4 +38,18 @@ func CreateUser(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusInternalServerError, user)
 	}
+}
+
+// DeleteUser delete user
+func DeleteUser(c *gin.Context) {
+	id64, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+	userID := uint(id64)
+	user := models.User{Model: gorm.Model{ID: userID}}
+	db := config.GetDB()
+	if err := db.Delete(&user).Error; err != nil {
+		fmt.Printf("%v\n", err)
+		c.JSON(http.StatusNotAcceptable, err)
+		return
+	}
+	c.JSON(http.StatusAccepted, user)
 }
